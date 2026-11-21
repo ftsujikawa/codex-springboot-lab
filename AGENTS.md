@@ -32,3 +32,14 @@
 - Summarize changes.
 - Report executed tests and their results.
 - Explain any unresolved issues.
+
+## Available project Skills
+
+The repository provides a java-test skill at:
+.agents/skills/java-test/SKILL.md
+
+When asked to create, improve, or investigate Java tests:
+- Prefer the java-test skill.
+- Follow its testing workflow.
+- Respect all existing AGENTS.md rules.
+- Report Maven test results in Japanese.

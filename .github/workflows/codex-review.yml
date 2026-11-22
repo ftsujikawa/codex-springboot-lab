@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: read
     outputs:
       allowed: ${{ steps.gate.outputs.allowed }}
       head_sha: ${{ steps.gate.outputs.head_sha }}
@@ -54,6 +55,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
+      pull-requests: read
     outputs:
       feedback: ${{ steps.codex.outputs.final-message }}
     steps:
@@ -78,7 +80,7 @@ jobs:
         uses: openai/codex-action@v1
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          permission-profile: ':read-only'
+          sandbox: read-only
           safety-strategy: drop-sudo
           prompt: |
             Review the pull request changes using:

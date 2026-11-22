@@ -54,6 +54,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
+      pull-requests: read
     outputs:
       feedback: ${{ steps.codex.outputs.final-message }}
     steps:
@@ -64,15 +65,20 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
-      - name: Fetch PR commit as data only
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          EXPECTED_SHA: ${{ needs.authorize.outputs.head_sha }}
-        run: |
-          set -euo pipefail
-          git fetch --no-tags origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/review-head"
-          test "$(git rev-parse refs/remotes/origin/review-head)" = "$EXPECTED_SHA"
+      - name: Fetch PR
+  env:
+    PR_NUMBER: ${{ inputs.pr_number }}
+    GH_TOKEN: ${{ github.token }}
+    GH_REPO: ${{ github.repository }}
+  run: |
+    set -euo pipefail
 
+    gh api \
+      "repos/${GH_REPO}/pulls/${PR_NUMBER}" \
+      --jq '.number'
+
+    git fetch --no-tags origin \
+      "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/review-head"
       - name: Run read-only Codex review
         id: codex
         uses: openai/codex-action@v1

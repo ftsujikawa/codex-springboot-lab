@@ -54,6 +54,7 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
+      pull-requests: read 
     outputs:
       feedback: ${{ steps.codex.outputs.final-message }}
     steps:

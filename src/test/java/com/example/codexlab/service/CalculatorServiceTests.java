@@ -71,6 +71,17 @@ class CalculatorServiceTests {
 	}
 
 	@Test
+	void returnsZeroWhenDividendMagnitudeIsSmallerThanDivisorMagnitude() {
+		int divisor = 3;
+
+		int positiveDividendResult = calculator.divide(2, divisor);
+		int negativeDividendResult = calculator.divide(-2, divisor);
+
+		assertEquals(0, positiveDividendResult);
+		assertEquals(0, negativeDividendResult);
+	}
+
+	@Test
 	void returnsMinimumIntWhenDivisionOverflows() {
 		int dividend = Integer.MIN_VALUE;
 		int divisor = -1;

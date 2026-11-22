@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Local MCP development
+tools/mcp/.venv/
+__pycache__/
+*.pyc

@@ -70,14 +70,6 @@ jobs:
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           EXPECTED_SHA: ${{ needs.authorize.outputs.head_sha }}
-        run: |
-          set -euo pipefail
-          git fetch --no-tags origin "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/review-head"
-          test "$(git rev-parse refs/remotes/origin/review-head)" = "$EXPECTED_SHA"
-      - name: Fetch PR commit as data only
-        env:
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          EXPECTED_SHA: ${{ needs.authorize.outputs.head_sha }}
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail

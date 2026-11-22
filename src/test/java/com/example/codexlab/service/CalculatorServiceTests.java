@@ -41,6 +41,13 @@ class CalculatorServiceTests {
 	}
 
 	@Test
+	void wrapsToZeroWhenAddingTwoMinimumInts() {
+		int result = calculator.add(Integer.MIN_VALUE, Integer.MIN_VALUE);
+
+		assertEquals(0, result);
+	}
+
+	@Test
 	void dividesIntegers() {
 		assertEquals(3, calculator.divide(12, 4));
 		assertEquals(2, calculator.divide(7, 3));
@@ -92,6 +99,33 @@ class CalculatorServiceTests {
 	}
 
 	@Test
+	void dividesMinimumIntByOneWithoutOverflow() {
+		int quotient = calculator.divide(Integer.MIN_VALUE, 1);
+
+		assertEquals(Integer.MIN_VALUE, quotient);
+	}
+
+	@Test
+	void dividesNextIntAboveMinimumByNegativeOneWithoutOverflow() {
+		int dividend = Integer.MIN_VALUE + 1;
+
+		int quotient = calculator.divide(dividend, -1);
+
+		assertEquals(Integer.MAX_VALUE, quotient);
+	}
+
+	@Test
+	void dividesByMinimumIntAtTheMagnitudeBoundary() {
+		int divisor = Integer.MIN_VALUE;
+
+		int equalDividendQuotient = calculator.divide(Integer.MIN_VALUE, divisor);
+		int smallerMagnitudeQuotient = calculator.divide(Integer.MIN_VALUE + 1, divisor);
+
+		assertEquals(1, equalDividendQuotient);
+		assertEquals(0, smallerMagnitudeQuotient);
+	}
+
+	@Test
 	void rejectsZeroDivisor() {
 		assertThrows(IllegalArgumentException.class, () -> calculator.divide(1, 0));
 	}
@@ -106,7 +140,7 @@ class CalculatorServiceTests {
 
 	@Test
 	void rejectsZeroDivisorForNegativeDividend() {
-		int dividend = -1;
+		int dividend = Integer.MIN_VALUE;
 		int divisor = 0;
 
 		assertThrows(IllegalArgumentException.class, () -> calculator.divide(dividend, divisor));

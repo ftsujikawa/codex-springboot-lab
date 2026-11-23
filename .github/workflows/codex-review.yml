@@ -85,6 +85,27 @@ jobs:
           unset GIT_CONFIG_COUNT GIT_CONFIG_KEY_0 GIT_CONFIG_VALUE_0
           test "$(git rev-parse refs/remotes/origin/review-head)" = "$EXPECTED_SHA"
 
+      - name: Verify OpenAI API key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY secret is missing or unavailable"
+            exit 1
+          fi
+      - name: Verify OpenAI API key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY is empty or unavailable"
+            exit 1
+          fi
+
+          echo "OPENAI_API_KEY is available"
+
       - name: Run read-only Codex review
         id: codex
         uses: openai/codex-action@v1

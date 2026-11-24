@@ -76,13 +76,24 @@ jobs:
           # GitHub Tokenで一時的に認証
           export GIT_CONFIG_COUNT=1
           export GIT_CONFIG_KEY_0="http.https://github.com/.extraheader"
-          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          export GIT_CONFIG_VALUE_0
 
-          git fetch --no-tags origin             "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/review-head"
+          git fetch --no-tags origin \
+            "+refs/pull/${PR_NUMBER}/head:refs/remotes/origin/review-head"
 
           unset GIT_CONFIG_COUNT GIT_CONFIG_KEY_0 GIT_CONFIG_VALUE_0
           test "$(git rev-parse refs/remotes/origin/review-head)" = "$EXPECTED_SHA"
 
+      - name: Verify OpenAI API key
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::OPENAI_API_KEY is EMPTY"
+            exit 1
+          fi
+          echo "OPENAI_API_KEY is available"
       - name: Run read-only Codex review
         id: codex
         uses: openai/codex-action@v1

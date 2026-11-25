@@ -1,10 +1,11 @@
-# Codex PR Review Smoke Test
+# Codex Automatic Review Smoke Test
 
-This pull request verifies the GitHub Actions workflow.
+Purpose:
+Verify trusted pull request automatic review.
 
-Expected jobs:
-1. authorize
-2. review
-3. comment
+Expected GitHub Actions jobs:
+- authorize
+- review
+- comment
 
-This change does not modify Java production code.
+This is a documentation-only test.
